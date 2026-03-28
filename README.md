@@ -13,52 +13,6 @@ IPGuard 🛡️
 - 数据来源：个人服务器安全日志、主动攻击记录、公开恶意 IP 情报
  
  
- 
-快速使用
- 
-1. 下载黑名单
- 
-bash
-  
-
-# 克隆仓库到本地
-git clone https://github.com/chxovo/IPguard.git
-cd IPguard
- 
- 
-2. 批量封禁（以 iptables 为例）
- 
-bash
-  
-
-# 读取 txt 文件并批量添加封禁规则（自动忽略注释行）
-while IFS= read -r line; do
-  ip=$(echo "$line" | grep -E '^[0-9.]+' | awk '{print $1}')
-  if [ -n "$ip" ]; then
-    sudo iptables -A INPUT -s "$ip" -j DROP
-  fi
-done < blacklist.txt
-
-# 保存规则（避免重启后失效）
-sudo iptables-save > /etc/iptables/rules.v4
- 
- 
-3. 批量封禁（以 ufw 为例）
- 
-bash
-  
-
-while IFS= read -r line; do
-  ip=$(echo "$line" | grep -E '^[0-9.]+' | awk '{print $1}')
-  if [ -n "$ip" ]; then
-    sudo ufw deny in from "$ip" to any
-  fi
-done < blacklist.txt
-sudo ufw reload
- 
- 
- 
- 
 协议说明
  
 本项目所有 IP 黑名单数据遵循 Creative Commons Attribution 4.0 International (CC BY 4.0) 协议。
@@ -85,28 +39,6 @@ Creative Commons Attribution 4.0 International (CC BY 4.0)
  
  
  
-目录结构
- 
-plaintext
-  
-
-IPguard/
-├── README.md          # 本说明文件
-├── LICENSE            # CC BY 4.0 协议文件
-└── blacklist.txt      # IP 黑名单文本文件
- 
- 
- 
- 
-贡献指南
- 
-1. Fork 本仓库
-2. 创建你的功能分支 ( git checkout -b feature/AddNewIP )
-3. 提交你的修改 ( git commit -m 'Add some malicious IP' )
-4. 推送到分支 ( git push origin feature/AddNewIP )
-5. 打开一个 Pull Request
- 
- 
  
 免责声明
  
